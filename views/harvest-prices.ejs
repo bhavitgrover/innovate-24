@@ -1,236 +1,32 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create a Job Requirement</title>
+</head>
+<body>
+    <form action="" method="POST">
+        <input type="text" name="job" placeholder="Job:" autocomplete="off">
+        <input type="number" name="salary" placeholder="Salary Per Hour:">
+        <input type="number" name="daysPerWeek" placeholder="Days Per Week:">
+        <input type="text" name="location" placeholder="Location:" autocomplete="off">
+        <input type="submit">
+    </form>
+</body>
+</html> -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
     />
+    <title>Level</title>
     <style>
-      .up-time {
-        width: 100%;
-        position: absolute;
-        top: -1vh;
-        margin-left: -3.5vh;
-      }
-      * {
-        z-index: 2;
-      }
-      .down-bar {
-        width: 100%;
-        position: fixed;
-        bottom: 0;
-      }
-      .heading {
-        color: #000;
-        font-size: 1.5rem;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-        letter-spacing: -0.98px;
-      }
-      .loyalty {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        position: relative;
-
-        margin-top: 0vh;
-
-        padding-top: 10vh;
-      }
-      .loyaltyImage {
-        position: absolute;
-        top: 0;
-        margin-left: -1.5vh;
-        width: 100%;
-        z-index: 10000000;
-      }
-      .chartContainer {
-        z-index: 1;
-        height: 34vh;
-        width: 34vh;
-        top: 2.5vh;
-        position: absolute;
-        transform: rotate(-180deg);
-        transition: 0.5s;
-      }
-      .chartColored {
-        width: 34vh;
-        height: 34vh;
-        border: 3vh solid #ef9d22;
-        border-radius: 32vh;
-        position: absolute;
-        top: 0;
-        clip-path: polygon(0 0, 100% 0, 100% 50%, 0% 50%);
-      }
-      .chartBlank {
-        width: 34vh;
-        height: 34vh;
-        border: 3vh solid #cdcdcd;
-        border-radius: 32vh;
-      }
-      .chartHider {
-        position: absolute;
-        top: 19.5vh;
-        background-color: white;
-        width: 34vh;
-        height: 17vh;
-      }
-      .loyalty > p {
-        color: rgba(0, 0, 0, 0.7);
-        font-family: Outfit;
-        font-size: 1.7vh;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-        letter-spacing: -0.504px;
-      }
-      .boxes {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-
-        margin-top: 5vh;
-      }
-      .box {
-        width: 30%;
-        height: 12vh;
-        flex-shrink: 0;
-        border-radius: 6px;
-        background: #fff;
-        filter: drop-shadow(0px 0px 7.8px rgba(0, 0, 0, 0.25));
-
-        padding: 1vh;
-      }
-
-      .box > h1 {
-        color: #000;
-        font-size: 5vh;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-        letter-spacing: -1.119px;
-      }
-
-      .box > p {
-        color: #dc4b52;
-        font-size: 1.7vh;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-        letter-spacing: -0.572px;
-      }
-      .harvestActions {
-        display: flex;
-        flex-direction: column;
-
-        margin-top: 3vh;
-        gap: 2vh;
-      }
-      .harvestActions > p {
-        color: rgba(0, 0, 0, 0.7);
-        font-size: 0.7rem;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-        letter-spacing: -0.422px;
-      }
-      .buttons {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-
-        width: 100%;
-      }
-      .buttons > button {
-        width: 18vh;
-        height: 8.1vh;
-        flex-shrink: 0;
-        border-radius: 49px;
-
-        border: none;
-        outline: none;
-
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        gap: 0.4vh;
-        cursor: pointer;
-      }
-      .buttons > button > svg {
-        width: 2.3vh;
-        height: 2.3vh;
-        flex-shrink: 0;
-      }
-      .buttons > button > p {
-        color: #fff;
-        font-size: 1rem;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-        letter-spacing: -0.691px;
-      }
-      .events {
-        display: flex;
-        flex-direction: column;
-
-        margin-top: 3vh;
-        gap: 2vh;
-      }
-      .events > p {
-        color: rgba(0, 0, 0, 0.7);
-        font-size: 0.7rem;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-        letter-spacing: -0.422px;
-      }
-      .event {
-        width: 100%;
-        height: 18vh;
-        flex-shrink: 0;
-
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: flex-end;
-
-        padding: 2vh;
-        border-radius: 10px;
-        background: linear-gradient(
-            180deg,
-            rgba(0, 0, 0, 0) 17.29%,
-            #000 95.86%
-          ),
-          url("homeGradient.png") lightgray 0px -12.816px / 100% 133.844% no-repeat;
-      }
-      .event > h1 {
-        color: #fff;
-        font-size: 1.3rem;
-        font-style: normal;
-        font-weight: 500;
-        line-height: normal;
-        letter-spacing: -0.771px;
-      }
-      .event > p {
-        color: #466eff;
-        font-family: Outfit;
-        font-size: 0.8rem;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-        letter-spacing: -0.341px;
-      }
-
       .navbar {
         width: 38vh;
         height: 10vh;
@@ -244,15 +40,143 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-evenly;
-        align-self: center;
 
-        position: fixed;
+        align-self: center;
+        position: absolute;
         bottom: 5vh;
       }
       .navbar > svg {
         width: 3vh;
         aspect-ratio: inherit;
+      }
+
+      .up-time {
+        width: 100%;
+        position: absolute;
+        top: -1vh;
+        margin-left: -3.5vh;
+      }
+
+      .down-bar {
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        margin-left: -3.5vh;
+      }
+      .heading {
+        color: #000;
+        font-family: Outfit;
+        font-size: 2.3rem;
+        font-style: normal;
+        font-weight: 500;
+        margin: 0px;
+        line-height: normal;
+        letter-spacing: -2.393px;
+        margin-top: 5vh;
+      }
+      .back {
+        position: absolute;
+        top: 7vh;
+        left: 2vh;
+        z-index: 1000;
+      }
+      .subtext {
+        color: rgba(0, 0, 0, 0.7);
+        font-size: 1.6vh;
+        margin: 0px;
+      }
+      .inputContainer {
+        width: 100%;
+        padding: 1.9vh 3vh;
+        background-color: rgba(0, 0, 0, 0.05);
+        border-radius: 100vw;
+        display: flex;
+        gap: 1.5vh;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1.8vh;
+      }
+      .inputContainer svg {
+        width: 1.4vh;
+        height: 1.4vh;
+      }
+      .uploadContainer {
+        background-color: rgba(0, 0, 0, 0.05);
+        border-radius: 3.7vh;
+        padding: 1.3vh;
+        margin-top: 1.8vh;
+        display: block;
         cursor: pointer;
+      }
+      .uploadContainer svg.uploadImage {
+        width: 100%;
+        height: auto;
+      }
+      .inputContainer input {
+        border: none;
+        outline: none;
+        padding: 0px;
+        flex: 1;
+        background-color: transparent;
+        font-size: 1.6vh;
+      }
+      .submitBtn {
+        margin-top: 3vh;
+        background-color: #01b764;
+        color: white;
+        padding: 1.3vh 2.6vh;
+        box-shadow: 0px 0px 16px 2px #bbb;
+        border: none;
+        outline: none;
+        border-radius: 100vh;
+        font-size: 2vh;
+        cursor: pointer;
+        margin-bottom: 18vh;
+      }
+      /* price cards grid */
+      .pricesGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.6vh;
+        margin: 2vh 3vh;
+        align-items: stretch;
+      }
+      .priceCard {
+        position: relative;
+        background: #d8f9d6; /* pale green */
+        border-radius: 12px;
+        padding: 1.2vh 1.2vh 1.8vh 1.2vh;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        min-height: 14vh;
+      }
+      .priceCard canvas {
+        width: 100% !important;
+        height: 9vh !important;
+        display: block;
+      }
+      .priceCard .watermark {
+        position: absolute;
+        left: 8%;
+        top: 20%;
+        font-size: 4.5vh;
+        font-weight: 800;
+        color: rgba(0, 0, 0, 0.07);
+        pointer-events: none;
+        user-select: none;
+        transform: translateY(-10%);
+        letter-spacing: 2px;
+      }
+      .heading {
+        color: #000;
+        font-family: Outfit;
+        font-size: 2.3rem;
+        font-style: normal;
+        font-weight: 500;
+        margin: 0px;
+        line-height: normal;
+        letter-spacing: -2.393px;
+        margin-top: 5vh;
       }
     </style>
   </head>
@@ -317,139 +241,50 @@
         />
       </svg>
 
-      <h1 class="heading">Welcome, <%= user.fname %>! 👋</h1>
-
-      <div
-        id="loyalty"
-        class="loyalty"
-        onclick="window.location.href = '/level'"
+      <svg
+        onclick="window.history.back()"
+        class="back"
+        width="12"
+        height="21"
+        viewBox="0 0 12 21"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        id="back"
       >
-        <div class="chartContainer" id="chart">
-          <div class="chartColored" id="chartColored"></div>
-          <div class="chartBlank"></div>
-        </div>
-        <div class="chartHider"></div>
-        <p>YOUR CURRENT TIER></p>
-        <h1 style="font-size: 5.6vh"><%= user.loyaltyLevel %></h1>
-      </div>
+        <path
+          d="M10.5304 1.49811L1.50391 10.5246L10.5304 19.551"
+          stroke="black"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
 
-      <div id="boxes" class="boxes">
-        <div class="box">
-          <% if (user.production < 1000) { %>
-          <h1><%= user.production %></h1>
-          <% } else { %>
-          <h1><%= Math.round(user.production / 1000) %>k</h1>
-          <% } %>
-          <p style="color: #466eff">kg</p>
-        </div>
-        <div class="box">
-          <h1><%= user.points %></h1>
-          <p style="color: #dc4b52">points</p>
-        </div>
-        <div class="box">
-          <% if (user.money < 1000) { %>
-          <h1><%= user.money %></h1>
-          <% } else { %>
-          <h1><%= Math.round(user.money / 1000) %>k</h1>
-          <% } %>
-          <p style="color: #01b764">earned</p>
-        </div>
-      </div>
+      <h1 class="heading">Harvest Prices</h1>
 
-      <div class="harvestActions">
-        <p>HARVEST ACTIONS</p>
-
-        <div class="buttons">
-          <button
-            style="background: #01b764"
-            onclick="window.location.href = '/crop/harvest'"
+      <div class="pricesGrid" id="pricesGrid">
+        <% for (let i = 0; i < user.crops.length; i++) { %>
+        <div class="priceCard">
+          <div class="watermark">
+            <%= user.crops[i]["name"].toUpperCase() %>
+          </div>
+          <canvas id="chart-<%= i %>"></canvas>
+          <div
+            style="
+              margin-top: 0.6vh;
+              font-weight: 600;
+              color: rgba(0, 0, 0, 0.75);
+            "
           >
-            <svg
-              width="21"
-              height="21"
-              viewBox="0 0 21 21"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                x="11.3868"
-                y="6.8994"
-                width="7.64835"
-                height="2.71518"
-                rx="1.15495"
-                fill="white"
-              />
-              <rect
-                x="12.4124"
-                y="3.44969"
-                width="7.64835"
-                height="2.71518"
-                rx="1.15495"
-                fill="white"
-              />
-              <rect
-                x="12.0705"
-                width="7.64835"
-                height="2.71518"
-                rx="1.15495"
-                fill="white"
-              />
-              <path
-                d="M0 10.2769C0 9.95799 0.258544 9.69945 0.577474 9.69945H4.1016V18.6276H0.577474C0.258544 18.6276 0 18.369 0 18.0501V10.2769Z"
-                fill="white"
-              />
-              <path
-                d="M5.50238 10.3527H10.5259V19.2808H7.74481H5.50238V10.3527Z"
-                fill="white"
-              />
-              <path
-                d="M7.60954 14.443L10.5259 10.3527L14.6626 13.3021C15.4416 13.8575 15.6229 14.9393 15.0674 15.7184L13.1568 18.3981L7.60954 14.443Z"
-                fill="white"
-              />
-              <path
-                d="M7.74481 20.7092V19.2808L7.74481 16.0921L18.4178 16.0921C19.6928 16.0921 20.7263 17.1257 20.7263 18.4006C20.7263 19.6756 19.6928 20.7092 18.4178 20.7092L7.74481 20.7092Z"
-                fill="white"
-              />
-              <path
-                d="M7.74481 19.2808H5.50238L7.74481 20.7092V19.2808Z"
-                fill="white"
-              />
-            </svg>
-            <p>Retire</p>
-          </button>
-          <button
-            style="background: #466eff"
-            onclick="window.location.href = '/crop/new'"
-          >
-            <svg
-              width="25"
-              height="25"
-              viewBox="0 0 25 25"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M17.1226 21.295V14.295C17.1226 14.0298 17.0172 13.7754 16.8297 13.5879C16.6421 13.4003 16.3878 13.295 16.1226 13.295H8.12256C7.85734 13.295 7.60299 13.4003 7.41545 13.5879C7.22792 13.7754 7.12256 14.0298 7.12256 14.295V21.295H5.12256C4.59213 21.295 4.08342 21.0843 3.70835 20.7092C3.33327 20.3341 3.12256 19.8254 3.12256 19.295V5.29498C3.12256 4.76455 3.33327 4.25584 3.70835 3.88077C4.08342 3.5057 4.59213 3.29498 5.12256 3.29498H16.3426C16.84 3.29504 17.3195 3.48043 17.6876 3.81498L20.4676 6.34198C20.6738 6.52942 20.8387 6.7579 20.9515 7.01277C21.0643 7.26764 21.1225 7.54327 21.1226 7.82198V19.295C21.1226 19.8254 20.9118 20.3341 20.5368 20.7092C20.1617 21.0843 19.653 21.295 19.1226 21.295H17.1226ZM16.1226 6.29498C15.8573 6.29498 15.603 6.40034 15.4155 6.58788C15.2279 6.77541 15.1226 7.02977 15.1226 7.29498V10.295C15.1226 10.5602 15.2279 10.8146 15.4155 11.0021C15.603 11.1896 15.8573 11.295 16.1226 11.295C16.3878 11.295 16.6421 11.1896 16.8297 11.0021C17.0172 10.8146 17.1226 10.5602 17.1226 10.295V7.29498C17.1226 7.02977 17.0172 6.77541 16.8297 6.58788C16.6421 6.40034 16.3878 6.29498 16.1226 6.29498ZM8.12256 6.29498C7.85734 6.29498 7.60299 6.40034 7.41545 6.58788C7.22792 6.77541 7.12256 7.02977 7.12256 7.29498V10.295C7.12256 10.5602 7.22792 10.8146 7.41545 11.0021C7.60299 11.1896 7.85734 11.295 8.12256 11.295H13.1226C13.3878 11.295 13.6421 11.1896 13.8297 11.0021C14.0172 10.8146 14.1226 10.5602 14.1226 10.295V7.29498C14.1226 7.02977 14.0172 6.77541 13.8297 6.58788C13.6421 6.40034 13.3878 6.29498 13.1226 6.29498H8.12256ZM9.12256 15.295H15.1226V19.295H9.12256V15.295ZM9.12256 10.295V7.29498H12.1226V10.295H9.12256Z"
-                fill="#FFFEFE"
-              />
-            </svg>
-
-            <p>Track</p>
-          </button>
+            Current: ₹<%= user.crops[i]["price"] %>/qtl
+          </div>
         </div>
+        <% } %>
       </div>
 
-      <div class="events" style="margin-bottom: 18vh">
-        <p>JOBS AVAILABLE</p>
-
-        <div class="event">
-          <h1>Farm Security Guard</h1>
-          <p>Meet Arshraj Dhillon Singh at the Village Temple.</p>
-        </div>
-      </div>
-
-      <div class="navbar">
+      <div class="navbar" id="navbar">
         <svg
+          onclick="window.location.href='/'"
           width="23"
           height="22"
           viewBox="0 0 23 22"
@@ -516,41 +351,125 @@
       </div>
     </div>
   </body>
+  <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script>
     function isMobileDevice() {
       return window.innerWidth <= 800;
     }
-
     window.onload = () => {
       if (isMobileDevice()) {
-        // console.log("hello");
+        console.log("hello");
         const phone = document.getElementById("phone");
-        const boxes = document.getElementById("boxes");
         phone.style.width = "100vw";
         phone.style.height = "100vh";
         phone.style.borderRadius = "0";
-        boxes.style.marginTop = "7vh";
         document.getElementById("up-time").style.display = "none";
+        document.getElementById("back").style.top = "3vh";
+        document.getElementById("heading").style.marginTop = "1vh";
+        document.getElementById("down-bar").style.position = "fixed";
+        document.getElementById("navbar").style.position = "fixed";
       }
-      const currentLevel = "<%= user.loyaltyLevel %>";
-      var chartColor = "#ef9d22";
-      if (currentLevel == "Silver") {
-        chartColor = "#777";
-      } else if (currentLevel == "Gold") {
-        chartColor = "#ffd819";
-      } else if (currentLevel == "Platinum") {
-        chartColor = "cyan";
+      // safely read optional #error element (may not exist)
+      const errorEl = document.getElementById("error");
+      const error = errorEl ? errorEl.innerText : "";
+
+      if (error) {
+        console.log("yes");
+        var notyf = new Notyf({
+          position: {
+            x: "center",
+            y: "bottom",
+          },
+        });
+        notyf.error(error);
       }
-      document.getElementById(
-        "chartColored"
-      ).style.border = `3vh solid ${chartColor}`;
-      const userPercentage = Number(
-        '<%= (typeof percentage !== "undefined" ? percentage : 0) %>'
-      );
-      const rotateDeg = -(180 - 180 * (userPercentage / 100));
-      document.getElementById(
-        "chart"
-      ).style.transform = `rotate(${rotateDeg}deg)`;
+
+      // --- build synthetic price series and draw charts ---
+      try {
+        // derive crops list from rendered DOM (name and current price)
+        const cardEls = Array.from(document.querySelectorAll(".priceCard"));
+        const crops = cardEls.map((el) => {
+          const name = (
+            el.querySelector(".watermark")?.textContent || ""
+          ).trim();
+          // the 'Current:' div is the next div after canvas; grab last div
+          const currentDiv =
+            Array.from(el.querySelectorAll("div")).find((d) =>
+              /Current:\s*₹/.test(d.textContent)
+            ) || null;
+          const currentText = currentDiv ? currentDiv.textContent : "";
+          const m = currentText.match(/₹\s*([0-9,\.]+)/);
+          const price = m ? Number(m[1].replace(/,/g, "")) : 0;
+          return { name, price };
+        });
+        function jitterBase(price) {
+          // produce a small series around the base price
+          const out = [];
+          let v = Number(price) || 1000;
+          for (let i = 0; i < 10; i++) {
+            const change = (Math.random() - 0.45) * (v * 0.03); // ~±3%
+            v = Math.max(50, v + change);
+            out.push(Math.round(v));
+          }
+          // add a gentle upward trend for visual appeal
+          for (let i = 0; i < out.length; i++)
+            out[i] = Math.round(out[i] * (1 + i * 0.004));
+          return out;
+        }
+
+        crops.forEach((c, idx) => {
+          const id = `chart-${idx}`;
+          const el = document.getElementById(id);
+          if (!el) return;
+          const data = jitterBase(c.price);
+          const labels = data.map((_, i) => `T-${data.length - i}`);
+
+          // create a small sparkline-like chart
+          const chart = new Chart(el.getContext("2d"), {
+            type: "line",
+            data: {
+              labels,
+              datasets: [
+                {
+                  data,
+                  borderColor: "#066a3a",
+                  backgroundColor: (ctx) => {
+                    const grd = ctx.chart.ctx.createLinearGradient(
+                      0,
+                      0,
+                      0,
+                      200
+                    );
+                    grd.addColorStop(0, "rgba(6,106,58,0.18)");
+                    grd.addColorStop(1, "rgba(6,106,58,0.02)");
+                    return grd;
+                  },
+                  fill: true,
+                  tension: 0.35,
+                  pointRadius: 0,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              elements: { line: { borderWidth: 2 } },
+              scales: {
+                x: { display: false },
+                y: {
+                  display: false,
+                  suggestedMin: Math.min(...data) * 0.98,
+                  suggestedMax: Math.max(...data) * 1.02,
+                },
+              },
+            },
+          });
+        });
+      } catch (e) {
+        console.error("chart init error", e);
+      }
     };
   </script>
 </html>
