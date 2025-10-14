@@ -1,50 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
-        * { 
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Outfit';
-            font-weight: 400;
-            letter-spacing: -0.47px;
-        }
-        ::-webkit-scrollbar {
-            display: none;
-        }
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+      @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Outfit";
+        font-weight: 400;
+        letter-spacing: -0.47px;
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
 
-            height: 100vh;
+        height: 100vh;
 
-            background: #1d1d1d;
-        }
+        background: linear-gradient(180deg, #0f1720 0%, #1d1d1d 100%);
+        -webkit-font-smoothing: antialiased;
+      }
+      .phone {
+        height: 96vh;
+        width: 44vh;
+        max-width: 420px;
+        background: linear-gradient(180deg, #ffffff 0%, #fbfdfa 100%);
+        border-radius: 44px;
+        overflow: auto;
+        padding-top: 5.6vh;
+        padding-left: 3.2vh;
+        padding-right: 3.2vh;
+        z-index: 10;
+        position: relative;
+        box-shadow: 0 20px 60px rgba(2, 6, 23, 0.6),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(0, 0, 0, 0.12);
+
+        display: flex;
+        flex-direction: column;
+      }
+      /* top notch / speaker */
+      .phone::before {
+        content: "";
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 34%;
+        height: 6px;
+        background: rgba(0, 0, 0, 0.08);
+        border-radius: 8px;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset;
+        pointer-events: none;
+      }
+      /* bottom home indicator */
+      .phone::after {
+        content: "";
+        position: absolute;
+        bottom: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 36%;
+        height: 6px;
+        background: rgba(0, 0, 0, 0.06);
+        border-radius: 100px;
+        opacity: 0.9;
+        pointer-events: none;
+      }
+
+      /* responsive: phone fills viewport on narrow screens */
+      @media (max-width: 600px) {
         .phone {
-            height: 98vh;
-            width: 45vh;
-            background: #fff;
-            border-radius: 56px;
-            overflow: auto;
-            padding-top: 6vh;
-            padding-left: 3.5vh;
-            padding-right: 3.5vh;
-            z-index: 0;
-            position: relative;
-
-            display: flex;
-            flex-direction: column;
+          width: 100vw;
+          height: 100vh;
+          border-radius: 0;
+          padding-top: 5vh;
+          padding-left: 4vw;
+          padding-right: 4vw;
         }
+        .phone::before {
+          display: none;
+        }
+        .phone::after {
+          bottom: 20px;
+        }
+      }
     </style>
-</head>
-<body>
-
-</body>
+  </head>
+  <body></body>
 </html>

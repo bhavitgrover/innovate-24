@@ -150,9 +150,8 @@
         overflow: hidden;
         min-height: 14vh;
       }
-      .priceCard canvas {
-        width: 100% !important;
-        height: 9vh !important;
+      .apex-chart {
+        width: 100%;
         display: block;
       }
       .priceCard .watermark {
@@ -178,6 +177,13 @@
         letter-spacing: -2.393px;
         margin-top: 5vh;
       }
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+      }
+
     </style>
   </head>
   <body>
@@ -264,23 +270,34 @@
 
       <div class="pricesGrid" id="pricesGrid">
         <% for (let i = 0; i < user.crops.length; i++) { %>
-        <div class="priceCard">
+        <div class="priceCard" style="margin-left: -1.3vw;" data-prev="<%= user.crops[i]["mspPrices"][0] %>" data-new="<%= user.crops[i]["mspPrices"][1] %>">
           <div class="watermark">
             <%= user.crops[i]["name"].toUpperCase() %>
           </div>
-          <canvas id="chart-<%= i %>"></canvas>
+          <div id="chart-<%= i %>" class="apex-chart"></div>
           <div
             style="
               margin-top: 0.6vh;
               font-weight: 600;
               color: rgba(0, 0, 0, 0.75);
+              font-size: 1.5vh;
             "
           >
-            Current: ₹<%= user.crops[i]["price"] %>/qtl
+            Current: ₹<%= user.crops[i]["mspPrices"][0] %>/qtl
+          </div>
+          <div
+            style="
+              margin-top: 0.6vh;
+              font-weight: 600;
+              color: rgba(0, 0, 0, 0.75);
+              font-size: 1.5vh;
+            "
+          >
+            Predicted: ₹<%= user.crops[i]["mspPrices"][1] %>/qtl
           </div>
         </div>
         <% } %>
-      </div>
+  </div>
 
       <div class="navbar" id="navbar">
         <svg
@@ -352,7 +369,7 @@
     </div>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <script>
     function isMobileDevice() {
       return window.innerWidth <= 800;
@@ -361,14 +378,21 @@
       if (isMobileDevice()) {
         console.log("hello");
         const phone = document.getElementById("phone");
-        phone.style.width = "100vw";
-        phone.style.height = "100vh";
-        phone.style.borderRadius = "0";
-        document.getElementById("up-time").style.display = "none";
-        document.getElementById("back").style.top = "3vh";
-        document.getElementById("heading").style.marginTop = "1vh";
-        document.getElementById("down-bar").style.position = "fixed";
-        document.getElementById("navbar").style.position = "fixed";
+        if (phone) {
+          phone.style.width = "100vw";
+          phone.style.height = "100vh";
+          phone.style.borderRadius = "0";
+        }
+        const upTimeEl = document.getElementById("up-time");
+        if (upTimeEl && upTimeEl.style) upTimeEl.style.display = "none";
+        const backEl = document.getElementById("back");
+        if (backEl && backEl.style) backEl.style.top = "3vh";
+        const headingEl = document.getElementById("heading") || document.querySelector('.heading');
+        if (headingEl && headingEl.style) headingEl.style.marginTop = "1vh";
+        const downBarEl = document.getElementById("down-bar");
+        if (downBarEl && downBarEl.style) downBarEl.style.position = "fixed";
+        const navbarEl = document.getElementById("navbar");
+        if (navbarEl && navbarEl.style) navbarEl.style.position = "fixed";
       }
       // safely read optional #error element (may not exist)
       const errorEl = document.getElementById("error");
@@ -385,90 +409,77 @@
         notyf.error(error);
       }
 
-      // --- build synthetic price series and draw charts ---
+      // --- build synthetic price series and draw charts using ApexCharts ---
       try {
-        // derive crops list from rendered DOM (name and current price)
         const cardEls = Array.from(document.querySelectorAll(".priceCard"));
-        const crops = cardEls.map((el) => {
-          const name = (
-            el.querySelector(".watermark")?.textContent || ""
-          ).trim();
-          // the 'Current:' div is the next div after canvas; grab last div
-          const currentDiv =
-            Array.from(el.querySelectorAll("div")).find((d) =>
-              /Current:\s*₹/.test(d.textContent)
-            ) || null;
-          const currentText = currentDiv ? currentDiv.textContent : "";
-          const m = currentText.match(/₹\s*([0-9,\.]+)/);
-          const price = m ? Number(m[1].replace(/,/g, "")) : 0;
-          return { name, price };
-        });
-        function jitterBase(price) {
-          // produce a small series around the base price
+        function makeSeriesFromEndpoints(prev, next, points = 5) {
+          let a = Number(prev) || 0;
+          let b = Number(next) || 0;
           const out = [];
-          let v = Number(price) || 1000;
-          for (let i = 0; i < 10; i++) {
-            const change = (Math.random() - 0.45) * (v * 0.03); // ~±3%
-            v = Math.max(50, v + change);
-            out.push(Math.round(v));
+          if (points <= 2) return [a, b];
+          out.push(Math.round(a));
+          for (let i = 1; i < points - 1; i++) {
+            const t = i / (points - 1);
+            const base = a + (b - a) * t;
+            const range = Math.max(5, Math.abs(b - a));
+            const baseJitterScale = 0.18;
+            const jitterScale = (1 - Math.abs(0.5 - t) * 2) * baseJitterScale;
+            let jitter = (Math.random() - 0.5) * range * jitterScale;
+            if (Math.random() < 0.12) jitter += (Math.random() - 0.5) * range * 0.35;
+            const volComponent = (Math.random() - 0.5) * Math.max(1, range * 0.06);
+            const trendNoise = (Math.random() - 0.5) * range * 0.02 * (1 - Math.abs(2 * t - 1));
+            let val = base + jitter + volComponent + trendNoise;
+            const prevVal = out[out.length - 1];
+            if (typeof prevVal === 'number') val = prevVal * 0.25 + val * 0.75;
+            out.push(Math.round(Math.max(1, val)));
           }
-          // add a gentle upward trend for visual appeal
-          for (let i = 0; i < out.length; i++)
-            out[i] = Math.round(out[i] * (1 + i * 0.004));
+          out.push(Math.round(b));
           return out;
         }
 
-        crops.forEach((c, idx) => {
-          const id = `chart-${idx}`;
-          const el = document.getElementById(id);
-          if (!el) return;
-          const data = jitterBase(c.price);
-          const labels = data.map((_, i) => `T-${data.length - i}`);
+        const createdCharts = [];
+        cardEls.forEach((cardEl, idx) => {
+          const prev = cardEl.getAttribute('data-prev');
+          const next = cardEl.getAttribute('data-new');
+          const container = document.getElementById(`chart-${idx}`);
+          if (!container) return;
+          // compute a sensible pixel height for mobile/inside scrollable phone mock
+          const parentH = container.parentElement ? container.parentElement.clientHeight : 120;
+          const heightPx = Math.max(56, Math.round(parentH * 0.45));
+          container.style.height = heightPx + 'px';
 
-          // create a small sparkline-like chart
-          const chart = new Chart(el.getContext("2d"), {
-            type: "line",
-            data: {
-              labels,
-              datasets: [
-                {
-                  data,
-                  borderColor: "#066a3a",
-                  backgroundColor: (ctx) => {
-                    const grd = ctx.chart.ctx.createLinearGradient(
-                      0,
-                      0,
-                      0,
-                      200
-                    );
-                    grd.addColorStop(0, "rgba(6,106,58,0.18)");
-                    grd.addColorStop(1, "rgba(6,106,58,0.02)");
-                    return grd;
-                  },
-                  fill: true,
-                  tension: 0.35,
-                  pointRadius: 0,
-                },
-              ],
+          const series = makeSeriesFromEndpoints(prev, next, 5);
+          const options = {
+            chart: {
+              type: 'area',
+              sparkline: { enabled: true },
+              height: heightPx,
+              toolbar: { show: false },
             },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: { legend: { display: false } },
-              elements: { line: { borderWidth: 2 } },
-              scales: {
-                x: { display: false },
-                y: {
-                  display: false,
-                  suggestedMin: Math.min(...data) * 0.98,
-                  suggestedMax: Math.max(...data) * 1.02,
-                },
-              },
-            },
-          });
+            series: [{ name: 'price', data: series }],
+            stroke: { curve: 'smooth', width: 2, colors: ['#066a3a'] },
+            fill: { type: 'gradient', gradient: { shade: 'light', type: 'vertical', shadeIntensity: 0.2, gradientToColors: ['#ffffff'], inverseColors: false, opacityFrom: 0.18, opacityTo: 0.02, stops: [0, 100] } },
+            markers: { size: 3, colors: ['#066a3a'] },
+            tooltip: { enabled: true, y: { formatter: (v) => '₹' + v } },
+            xaxis: { labels: { show: false }, axisTicks: { show: false }, axisBorder: { show: false } },
+            yaxis: { show: false },
+          };
+          try {
+            const chart = new ApexCharts(container, options);
+            chart.render().then(() => console.debug(`apex chart #${idx} rendered`, { prev, next, series }))
+              .catch((err) => console.error('apex chart render error', err));
+            createdCharts.push(chart);
+          } catch (err) {
+            console.error(`apex chart init error for #${idx}`, err);
+          }
         });
+
+        // deferred reflow for mobile browsers
+        setTimeout(() => {
+          try { createdCharts.forEach((c) => { try { c.updateOptions({}, false, true); } catch (e) {} }); } catch (e) {}
+        }, 120);
       } catch (e) {
-        console.error("chart init error", e);
+        console.error('chart init error', e);
       }
     };
   </script>

@@ -1,46 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Track Crop</title>
-</head>
-<body>
-    <form action="" method="POST">
-        <select name="crop">
-            <option value="paddy">Paddy</option>
-            <option value="maize">Maize</option>
-            <option value="wheat">Wheat</option>
-            <option value="barley">Barley</option>
-            <option value="bajra">Bajra</option>
-            <option value="jowar">Jowar</option>
-            <option value="ragi">Ragi</option>
-            <option value="soyabeen">Soyabeen</option>
-            <option value="gram">Gram</option>
-            <option value="jute">Jute</option>
-            <option value="groundnut">Groundnut</option>
-            <option value="masur">Masur</option>
-            <option value="rapeseed">Rapeseed</option>
-            <option value="mustard">Mustard</option>
-            <option value="safflower">Safflower</option>
-            <option value="tur">Tur</option>
-            <option value="sunflower">Sunflower</option>
-            <option value="urad">Urad</option>
-            <option value="cotton">Cotton</option>
-            <option value="nigerseed">Nigerseed</option>
-            <option value="moong">Moong</option>
-            <option value="sesamium">Sesamium</option>
-            <option value="copra">Copra</option>
-        </select>
-        <input type="number" name="quantity" placeholder="Weight of Seeds (kg):">
-        <input type="submit"><br>
-        <% if (error) { %>
-            <p><%= error %></p>
-        <% } %>
-    </form>
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -464,10 +421,10 @@
           id="cropImage"
           style="display: none"
         />
-        <!-- crop image preview (green dot + filename) -->
         <div id="cropImagePreview" class="filePreview" aria-hidden="true">
           <span class="fileName">No file selected</span>
         </div>
+        <h1 style="font-size: 2vh; margin-left: 1vh" id="meow"></h1>
         <div
           style="display: flex; justify-content: center; align-items: center"
         >
@@ -495,6 +452,47 @@
       </svg>
     </div>
   </body>
+  <script>
+    const mspPrices = {
+      paddy: [2369, 2410],
+      maize: [2225, 2250],
+      wheat: [2425, 2585],
+      barley: [1980, 2150],
+      bajra: [2625, 2775],
+      jowar: [3371, 3621],
+      ragi: [4290, 4886],
+      soyabeen: [4892, 5020],
+      gram: [5650, 5875],
+      jute: [5400, 5550],
+      groundnut: [6783, 7019],
+      masur: [6700, 7000],
+      rapeseed: [5950, 6200],
+      mustard: [5450, 5700],
+      safflower: [5940, 6540],
+      tur: [7550, 7850],
+      sunflower: [7280, 7710],
+      urad: [7400, 7640],
+      cotton: [6620, 7209],
+      nigerseed: [7287, 8107],
+      moong: [8682, 9000],
+      sesamium: [8845, 9424],
+      copra: [11582, 12100],
+    };
+
+    const cropSelect = document.querySelector('select[name="crop"]');
+    const heading = document.getElementById("meow");
+
+    cropSelect.addEventListener("change", function () {
+      const crop = cropSelect.value;
+      const prices = mspPrices[crop];
+      if (prices) {
+        heading.innerHTML = `Old MSP: ₹${prices[0]} &nbsp; New MSP: ₹${prices[1]}`;
+      } else {
+        heading.innerHTML = "Track Harvest";
+      }
+    });
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
   <script>
     function isMobileDevice() {
@@ -525,7 +523,6 @@
         });
         notyf.error(error);
       }
-      // preview helpers for track page
       function makePreview(file) {
         const wrapper = document.createElement("div");
         const dot = document.createElement("span");
