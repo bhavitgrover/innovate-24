@@ -10,4 +10,14 @@ router.get("/", async (req, res) => {
   res.render("events", { crops: currentCrops, error: false, user: req.user });
 });
 
+router.post("/", async (req, res) => {
+  res.redirect("/events/soil-scan");
+});
+
+router.get("/soil-scan", async (req, res) => {
+  const foundUser = req.user;
+  if (!foundUser) return res.redirect("/login");
+  res.render("soil-scan", { error: false, user: req.user });
+});
+
 module.exports = router;
